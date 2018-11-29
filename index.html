@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hello PWA</title>
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+    <img src="images/logo.jpg">
+    <h1>搜索页面</h1>
+    <input id="inp" type="text" /><button id="btn">确定</button>
+    <script>
+        if ('serviceWorker' in navigator) { // 浏览器支持SW
+            navigator.serviceWorker.register('sw.js').then(function (registration) {
+                console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            }).catch(function (err) {
+                console.log('ServiceWorker registration failed: ', err);
+            });
+        }
+        function handle(data){
+            console.log(data)
+            var str="";
+            var odiv=document.createElement("ul");
+            for(var i=0;i<data.s.length;i++){
+                str+='<li class="oli">'+data.s[i]+'</li>';
+            }
+    //		console.log(data);
+    //		console.log(data.s.length);
+            console.log(str);
+            odiv.innerHTML=str;
+            document.body.appendChild(odiv);
+        }
+        var inp=document.getElementById("inp");
+        inp.oninput=function(){
+            var script=document.createElement("script");
+            script.src="http://suggestion.baidu.com/su?wd="+(this.value)+"&cb=handle";
+            document.body.appendChild(script);
+            script.onload=function(){
+                this.remove();
+            }
+        }
+        
+    </script>
+</body>
+</html>
